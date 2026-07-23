@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ongeza Bidhaa - PENDEZA</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    <script>
+        if (localStorage.getItem('pendeza_admin_logged_in') !== 'true') {
+            window.location.href = 'login.html';
+        }
+    </script>
+    
+    <div class="admin-container">
+        <div class="admin-sidebar">
+            <h2 class="gold-text">✦ PENDEZA</h2>
+            <nav class="admin-nav">
+                <a href="dashboard.html">🏠 Dashibodi</a>
+                <a href="add-product.html" class="active">➕ Ongeza Bidhaa</a>
+                <a href="orders.html">📋 Oda Zote</a>
+                <a href="#" onclick="logout()" class="logout-btn">🚪 Toka</a>
+            </nav>
+        </div>
+        
+        <div class="admin-content">
+            <h1>Ongeza Bidhaa Mpya</h1>
+            
+            <div id="successMessage" class="alert alert-success" style="display: none;"></div>
+            <div id="errorMessage" class="alert alert-error" style="display: none;"></div>
+            
+            <form id="addProductForm" class="product-form">
+                <div class="form-group">
+                    <label>Jina la Nguo:</label>
+                    <input type="text" id="productName" required placeholder="mfano: Gauni Jipya">
+                </div>
+                
+                <div class="form-group">
+                    <label>Bei (TSH):</label>
+                    <input type="number" id="productPrice" required placeholder="mfano: 50000" step="0.01">
+                </div>
+                
+                <div class="form-group">
+                    <label>Bei ya Punguzo (TSH) - Acha wazi kama hakuna:</label>
+                    <input type="number" id="discountPrice" placeholder="mfano: 35000" step="0.01">
+                </div>
+                
+                <div class="form-group">
+                    <label>URL ya Picha:</label>
+                    <input type="url" id="productImage" required 
+                           placeholder="https://example.com/picha.jpg"
+                           value="https://images.unsplash.com/photo-">
+                    <small style="color: #D4AF37;">
+                        Tumia <a href="https://unsplash.com" target="_blank" style="color: #D4AF37;">Unsplash.com</a> 
+                        au <a href="https://imgbb.com" target="_blank" style="color: #D4AF37;">ImgBB.com</a> kupata picha
+                    </small>
+                </div>
+                
+                <button type="submit" class="btn-gold">PANDISHA BIDHAA</button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        function logout() {
+            localStorage.removeItem('pendeza_admin_logged_in');
+            window.location.href = 'login.html';
+        }
+        
+        document.getElementById('addProductForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('productName').value;
+            const price = parseFloat(document.getElementById('productPrice').value);
+            const discountPrice = document.getElementById('discountPrice').value 
+                ? parseFloat(document.getElementById('discountPrice').value) 
+                : null;
+            const image = document.getElementById('productImage').value;
+            
+            // Get existing products
+            const products = JSON.parse(localStorage.getItem('pendeza_products') || '[]');
+            
+            // Add new product
+            products.push({
+                id: products.length + 1,
+                name: name,
+                price: price,
+                discount_price: discountPrice,
+                image: image
+            });
+            
+            // Save to localStorage
+            localStorage.setItem('pendeza_products', JSON.stringify(products));
+            
+            // Show success message
+            const successDiv = document.getElementById('successMessage');
+            successDiv.textContent = 'Bidhaa "' + name + '" imeongezwa kwa mafanikio!';
+            successDiv.style.display = 'block';
+            
+            // Clear form
+            this.reset();
+            
+            // Hide success message after 3 seconds
+            setTimeout(() => {
+                successDiv.style.display = 'none';
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
