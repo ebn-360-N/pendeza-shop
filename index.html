@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PENDEZA - Nguo za Kisasa | Gongo la Mboto</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1 class="logo">✦ PENDEZA ✦</h1>
+            <p class="tagline">Nguo za Kisasa kwa Bei Nafuu</p>
+            <p class="location">📍 Mahali: <strong>Gongo la Mboto</strong></p>
+            <p class="contact">📞 Wasiliana Nasi: <strong>0629509100</strong></p>
+        </div>
+    </header>
+    
+    <main>
+        <!-- Products Grid -->
+        <div class="products-grid" id="productsGrid">
+            <!-- Products will be loaded here by JavaScript -->
+        </div>
+        
+        <!-- Loading Message -->
+        <div id="loadingMessage" style="text-align: center; padding: 50px; display: none;">
+            <p style="color: #D4AF37; font-size: 1.2em;">Inapakia bidhaa...</p>
+        </div>
+        
+        <!-- No Products Message -->
+        <div id="noProducts" style="text-align: center; padding: 50px; display: none;">
+            <h2 style="color: #D4AF37;">Hakuna Bidhaa Bado</h2>
+            <p>Bidhaa zitakuwepo hivi karibuni. Karibu tena!</p>
+        </div>
+    </main>
+    
+    <!-- Order Modal -->
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeOrderForm()">&times;</span>
+            <h2 class="gold-text">Fomu ya Kuagiza</h2>
+            
+            <form id="orderForm">
+                <input type="hidden" name="product_id" id="product_id">
+                
+                <div class="form-group">
+                    <label>Jina Lako Kamili:</label>
+                    <input type="text" name="customer_name" id="customer_name" required 
+                           placeholder="Ingiza jina lako">
+                </div>
+                
+                <div class="form-group">
+                    <label>Namba ya Simu:</label>
+                    <input type="tel" name="phone" id="phone" required 
+                           placeholder="mfano: 0712345678">
+                </div>
+                
+                <div class="form-group">
+                    <label>Email Yako:</label>
+                    <input type="email" name="email" id="email" required 
+                           placeholder="mfano: jina@email.com">
+                </div>
+                
+                <div class="form-group">
+                    <label>Bidhaa Unayoagiza:</label>
+                    <input type="text" name="product_name" id="product_name" 
+                           readonly class="readonly-input">
+                </div>
+                
+                <button type="submit" class="btn-gold btn-block">
+                    📤 TUMA ODA SASA
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content" style="text-align: center;">
+            <h1 style="color: #D4AF37;">✅ Oda Imepokelewa!</h1>
+            <p id="successMessage"></p>
+            <a id="whatsappLink" href="#" target="_blank" class="btn-gold" style="display: inline-block; margin-top: 20px;">
+                💬 Wasiliana Nasi WhatsApp
+            </a>
+            <br><br>
+            <button onclick="closeSuccessModal()" style="color: #D4AF37; background: none; border: none; cursor: pointer;">
+                Rudi Nyumbani
+            </button>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 class="gold-text">✦ PENDEZA ✦</h3>
+                <p>Nguo za Kisasa kwa Ajili Yako</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Mawasiliano</h4>
+                <p>📧 Email: pendezapendeza@gmail.com</p>
+                <p>📞 Simu: 0629509100</p>
+                <p>📍 Gongo la Mboto</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Viungo</h4>
+                <a href="index.html">Nyumbani</a>
+                <a href="admin/login.html">Admin</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p class="creator">System created by: 0743799026</p>
+            <p class="copyright">© 2024 PENDEZA. Haki zote zimehifadhiwa.</p>
+        </div>
+    </footer>
+    
+    <script src="assets/js/products.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
