@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oda Zote - PENDEZA</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    <script>
+        if (localStorage.getItem('pendeza_admin_logged_in') !== 'true') {
+            window.location.href = 'login.html';
+        }
+    </script>
+    
+    <div class="admin-container">
+        <div class="admin-sidebar">
+            <h2 class="gold-text">✦ PENDEZA</h2>
+            <nav class="admin-nav">
+                <a href="dashboard.html">🏠 Dashibodi</a>
+                <a href="add-product.html">➕ Ongeza Bidhaa</a>
+                <a href="orders.html" class="active">📋 Oda Zote</a>
+                <a href="#" onclick="logout()" class="logout-btn">🚪 Toka</a>
+            </nav>
+        </div>
+        
+        <div class="admin-content">
+            <h1>Oda Zote za Wateja</h1>
+            
+            <button onclick="exportOrders()" class="btn-gold" style="margin-bottom: 20px;">
+                📥 Pakua Oda (CSV)
+            </button>
+            
+            <div class="table-responsive">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Jina la Mteja</th>
+                            <th>Namba ya Simu</th>
+                            <th>Email</th>
+                            <th>Bidhaa</th>
+                            <th>Tarehe na Muda</th>
+                            <th>Kitendo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTableBody">
+                        <tr>
+                            <td colspan="7" style="text-align: center;">Hakuna oda bado</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function logout() {
+            localStorage.removeItem('pendeza_admin_logged_in');
+            window.location.href = 'login.html';
+        }
+        
+        function loadOrders() {
+            const orders = JSON.parse(localStorage.getItem('pendeza_orders') || '[]');
+            const tbody = document.getElementById('ordersTableBody');
+            
+            if (orders.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">Hakuna oda bado</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = orders.reverse().map((order, index) => `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${order.customer_name}</td>
+                    <td>${order.phone}</td>
+                    <td>${order.email}</td>
+                    <td>${order.product_name}</td>
+                    <td>${order.order_date}</td>
+                    <td>
+                        <button onclick="deleteOrder(${order.id})" class="btn-delete">Futa</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        function deleteOrder(orderId) {
+            if (confirm('Una uhakika unataka kufuta oda hii?')) {
+                let orders = JSON.parse(localStorage.getItem('pendeza_orders') || '[]');
+                orders = orders.filter(order => order.id !== orderId);
+                localStorage.setItem('pendeza_orders', JSON.stringify(orders));
+                loadOrders();
+            }
+        }
+        
+        function exportOrders() {
+            const orders = JSON.parse(localStorage.getItem('pendeza_orders') || '[]');
+            
+            if (orders.length === 0) {
+                alert('Hakuna oda za kupakua');
+                return;
+            }
+            
+            // Create CSV content
+            let csv = 'Jina,Simu,Email,Bidhaa,Tarehe\n';
+            orders.forEach(order => {
+                csv += `${order.customer_name},${order.phone},${order.email},${order.product_name},${order.order_date}\n`;
+            });
+            
+            // Download CSV
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'pendeza_oda_' + new Date().toISOString().slice(0,10) + '.csv';
+            a.click();
+        }
+        
+        loadOrders();
+    </script>
+</body>
+</html>
