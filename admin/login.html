@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - PENDEZA</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="admin-login-body">
+    <div class="admin-login-container">
+        <div class="login-box">
+            <h2 class="gold-text">✦ PENDEZA ✦</h2>
+            <h3 class="white-text">Admin Login</h3>
+            
+            <div id="loginError" class="alert alert-error" style="display: none;"></div>
+            
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label>Jina la Mtumiaji:</label>
+                    <input type="text" id="username" required placeholder="Ingiza jina">
+                </div>
+                
+                <div class="form-group">
+                    <label>Nywila:</label>
+                    <input type="password" id="password" required placeholder="Ingiza nywila">
+                </div>
+                
+                <button type="submit" class="btn-gold btn-block">INGIA</button>
+            </form>
+            
+            <p style="margin-top: 20px; color: #777;">
+                <a href="../index.html" style="color: #D4AF37;">← Rudi kwenye Duka</a>
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        // Admin credentials
+        const ADMIN_USERNAME = 'admin';
+        const ADMIN_PASSWORD = 'MesJonh@2003';
+        
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('loginError');
+            
+            if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+                // Save login state
+                localStorage.setItem('pendeza_admin_logged_in', 'true');
+                localStorage.setItem('pendeza_admin_login_time', new Date().toISOString());
+                
+                // Redirect to dashboard
+                window.location.href = 'dashboard.html';
+            } else {
+                errorDiv.textContent = 'Jina au nywila si sahihi';
+                errorDiv.style.display = 'block';
+                
+                // Hide error after 3 seconds
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                }, 3000);
+            }
+        });
+        
+        // Redirect if already logged in
+        if (localStorage.getItem('pendeza_admin_logged_in') === 'true') {
+            // Check if session is not expired (24 hours)
+            const loginTime = new Date(localStorage.getItem('pendeza_admin_login_time'));
+            const now = new Date();
+            const hoursDiff = (now - loginTime) / (1000 * 60 * 60);
+            
+            if (hoursDiff < 24) {
+                window.location.href = 'dashboard.html';
+            } else {
+                localStorage.removeItem('pendeza_admin_logged_in');
+            }
+        }
+    </script>
+</body>
+</html>
